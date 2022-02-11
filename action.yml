@@ -1,0 +1,79 @@
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+name: 'Docker tag action'
+description: "GitHub Action to create Docker tag based on branch or tag"
+author: 'cytopia'
+branding:
+  icon: 'gitlab'
+  color: 'red'
+
+outputs:
+  docker-tag:
+    description: "Docker tag to be used"
+    value: ${{ steps.get-docker-tag.outputs.docker-tag }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get Docker Tag
+      id: get-docker-tag
+      shell: bash
+      run: |
+        # Commit, Branch or Tag
+        HEAD="$( git branch --no-color | grep '^\*' | sed 's|)||g' | xargs -n1 | tail -1 )"
+
+        # Commit Hash
+        HASH="$( git rev-parse HEAD | grep -Eo '^[0-9a-zA-Z]{7}' )"
+
+        # Hash is found in what Branch?
+        FROM="$( git branch --contains  "${HASH}" | head -2 | tac | head -1 | sed 's|^*[[:space:]]*||g' | sed 's|)||g' | xargs -n1 | tail -1 | xargs )"
+
+        # How many commits behind FROM branch
+        BEHIND="$( git rev-list --count "${HASH}..${FROM}" )"
+
+        ###
+        ### TAG
+        ###
+        if git name-rev "${HEAD}" | grep -E "^${HEAD} tags/${HEAD}" > /dev/null; then
+            GIT_NAME="${HEAD}"
+            GIT_TYPE="TAG"
+            GIT_HEAD="${HASH}"
+            DETACHED_FROM=${FROM}"
+            BEHIND=${BEHIND}"
+        ###
+        ### Branch or Detached Commit
+        ###
+        else
+            # Detached Commit (not latest in branch)
+            if [ "${BEHIND}" -gt "0" ]; then
+                GIT_NAME="${HEAD}"
+                GIT_TYPE="COMMIT"
+                GIT_HEAD="${HASH}"
+                DETACHED_FROM="${FROM}"
+                BEHIND="${BEHIND}"
+            else
+                if [ "$( git branch | grep '^\*' | sed 's|^*[[:space:]]*||g' | xargs )" = "${FROM}" ]; then
+                    DETACHED=
+                else
+                    DETACHED="${FROM}"
+                fi
+                GIT_NAME="${FROM}"
+                GIT_TYPE="BRANCH"
+                GIT_HEAD="${HASH}"
+                DETACHED_FROM="${DETACHED}"
+                BEHIND="${BEHIND}"
+            fi
+        fi
+
+        ###
+        ### Determine Docker tag
+        ###
+        if [ "${GIT_TYPE}" = "BRANCH" ] && [ "${GIT_NAME}" = "master" ]; then
+          DOCKER_TAG="latest"
+        else
+          DOCKER_TAG="${GIT_NAME}"
+        fi
+
+        ###
+        ### Set final output
+        ###
+        echo "::set-output name=docker-tag::$(echo ${DOCKER_TAG})"
