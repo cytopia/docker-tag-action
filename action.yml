@@ -65,6 +65,15 @@ runs:
         fi
 
         ###
+        ### Debug logging
+        ###
+        echo "::debug::GIT_NAME=${GIT_NAME}"
+        echo "::debug::GIT_TYPE=${GIT_TYPE}"
+        echo "::debug::GIT_HEAD=${GIT_HEAD}"
+        echo "::debug::DETACHED_FROM=${DETACHED_FROM}"
+        echo "::debug::BEHIND=${BEHIND}"
+
+        ###
         ### Determine Docker tag
         ###
         if [ "${GIT_TYPE}" = "BRANCH" ] && [ "${GIT_NAME}" = "master" ]; then
@@ -72,8 +81,9 @@ runs:
         else
           DOCKER_TAG="${GIT_NAME}"
         fi
+        echo "::debug::DOCKER_TAG=${DOCKER_TAG}"
 
         ###
         ### Set final output
         ###
-        echo "::set-output name=docker-tag::$(echo ${DOCKER_TAG})"
+        echo "::set-output name=docker-tag::${DOCKER_TAG}"
