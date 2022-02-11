@@ -87,3 +87,4 @@ runs:
         ### Set final output
         ###
         echo "::set-output name=docker-tag::${DOCKER_TAG}"
+        echo "DOCKER_TAG=${DOCKER_TAG}"

@@ -18,7 +18,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tags@v0.2
+        uses: cytopia/docker-tag@v0.3
 
       - name: build
         run: |
