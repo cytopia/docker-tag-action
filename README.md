@@ -6,9 +6,9 @@
 on: [push]
 
 jobs:
-  hello_world_job:
+  docker_tag:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Print Docker tag
     steps:
 
       - name: Checkout repository
@@ -18,7 +18,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tags@v1
+        uses: cytopia/docker-tags@v0.2
 
       - name: build
         run: |
