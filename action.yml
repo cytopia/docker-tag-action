@@ -3,7 +3,7 @@ name: 'Docker tag action'
 description: "GitHub Action to create Docker tag based on branch or tag"
 author: 'cytopia'
 branding:
-  icon: 'gitlab'
+  icon: 'code'
   color: 'red'
 
 outputs:
