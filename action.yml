@@ -1,3 +1,4 @@
+---
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
 name: 'Docker tag action'
 description: "GitHub Action to create Docker tag based on branch or tag"
@@ -5,6 +6,20 @@ author: 'cytopia'
 branding:
   icon: 'code'
   color: 'red'
+
+inputs:
+  latest_git_branch:
+    description: 'Git branch name which will return "latest" as the Docker tag (default: master).'
+    required: false
+    default: 'master'
+  latest_docker_tag_name:
+    description: 'The name for the "latest" Docker tag (default: latest).'
+    required: false
+    default: 'latest'
+  non_latest_docker_tag_prefix:
+    description: 'The prefix for all Docker tags, which do not identify as the conventional latest Tag (default: empty)'
+    required: false
+    default: ''
 
 outputs:
   docker-tag:
@@ -21,8 +36,8 @@ runs:
         # Commit, Branch or Tag
         HEAD="$( git branch --no-color | grep '^\*' | sed 's|)||g' | xargs -n1 | tail -1 )"
 
-        # Commit Hash
-        HASH="$( git rev-parse HEAD | grep -Eo '^[0-9a-zA-Z]{7}' )"
+        # Get current Commit Hash (short)
+        HASH="$( git rev-parse --short HEAD )"
 
         # Hash is found in what Branch?
         FROM="$( git branch --contains  "${HASH}" | head -2 | tac | head -1 | sed 's|^*[[:space:]]*||g' | sed 's|)||g' | xargs -n1 | tail -1 | xargs )"
@@ -65,26 +80,25 @@ runs:
         fi
 
         ###
-        ### Debug logging
-        ###
-        echo "::debug::GIT_NAME=${GIT_NAME}"
-        echo "::debug::GIT_TYPE=${GIT_TYPE}"
-        echo "::debug::GIT_HEAD=${GIT_HEAD}"
-        echo "::debug::DETACHED_FROM=${DETACHED_FROM}"
-        echo "::debug::BEHIND=${BEHIND}"
-
-        ###
         ### Determine Docker tag
         ###
-        if [ "${GIT_TYPE}" = "BRANCH" ] && [ "${GIT_NAME}" = "master" ]; then
-          DOCKER_TAG="latest"
+        if [ "${GIT_TYPE}" = "BRANCH" ] && [ "${GIT_NAME}" = "${{ inputs.latest_git_branch }}" ]; then
+          DOCKER_TAG="${{ inputs.latest_docker_tag_name }}"
         else
-          DOCKER_TAG="${GIT_NAME}"
+          DOCKER_TAG="${{ inputs.non_latest_docker_tag_prefix }}${GIT_NAME}"
         fi
-        echo "::debug::DOCKER_TAG=${DOCKER_TAG}"
 
         ###
-        ### Set final output
+        ### Set final output for 'docker-tag'
         ###
         echo "::set-output name=docker-tag::${DOCKER_TAG}"
+
+        ###
+        ### Output information
+        ###
         echo "DOCKER_TAG=${DOCKER_TAG}"
+        echo "GIT_NAME=${GIT_NAME}"
+        echo "GIT_TYPE=${GIT_TYPE}"
+        echo "GIT_HEAD=${GIT_HEAD}"
+        echo "DETACHED_FROM=${DETACHED_FROM}"
+        echo "BEHIND=${BEHIND}"
