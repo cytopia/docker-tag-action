@@ -15,10 +15,30 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Docker tag action
+      - name: "Docker tag (default)"
         id: tag
         uses: ./
 
-      - name: Test
+      - name: "Docker tag (prefix)"
+        id: tag_prefix
+        uses: ./
+        with:
+          non_latest_docker_tag_prefix: "1-"
+
+      - name: "Docker tag (alt latest)"
+        id: tag_alt_latest
+        uses: ./
+        with:
+          latest_docker_tag_name: "earliest"
+
+      - name: "Output (default)"
         run: |
           echo "${{ steps.tag.outputs.docker-tag }}"
+
+      - name: "Output (prefix)"
+        run: |
+          echo "${{ steps.tag_prefix.outputs.docker-tag }}"
+
+      - name: "Output (alt latest)"
+        run: |
+          echo "${{ steps.tag_alt_latest.outputs.docker-tag }}"
