@@ -9,7 +9,7 @@
 This action determines the Docker tag based on what git branch, git tag or git commit you are on.
 
 
-## Determination
+## :arrows_clockwise: Determination
 
 The Docker tag output (`docker-tag`) of this action is determined in its default configuration as shown by the following table:
 
@@ -21,7 +21,7 @@ The Docker tag output (`docker-tag`) of this action is determined in its default
 | Detached commit    | `<git-commit-hash>`  |
 
 
-## Inputs
+## :arrow_forward: Inputs
 
 The following inputs can be used to alter the Docker tag name determination:
 
@@ -33,16 +33,14 @@ The following inputs can be used to alter the Docker tag name determination:
 | `non_latest_docker_tag_suffix` | No       | ``       | Optionally add a suffix to all non-latest docker tags.                          |
 
 
-
-
-## Outputs
+## :arrow_backward: Outputs
 
 | Output       | Description |
 |--------------|-------------|
 | `docker-tag` | The determined Docker tag name. |
 
 
-## Usage
+## :computer: Usage
 
 ### Basic
 
@@ -72,7 +70,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag-action@v0.4.6
+        uses: cytopia/docker-tag-action@v0.4.7
 
       - name: build
         run: |
@@ -116,7 +114,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag-action@v0.4.6
+        uses: cytopia/docker-tag-action@v0.4.7
         with:
           latest_git_branch: master
           latest_docker_tag_name: ${{ matrix.version }}
@@ -132,7 +130,7 @@ jobs:
 ```
 
 
-## Keep up-to-date with GitHub Dependabot
+## :exclamation: Keep up-to-date with GitHub Dependabot
 
 Since [Dependabot](https://docs.github.com/en/github/administering-a-repository/keeping-your-actions-up-to-date-with-github-dependabot) has [native GitHub Actions support](https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#package-ecosystem), to enable it on your GitHub repo all you need to do is add the `.github/dependabot.yml` file:
 
@@ -147,7 +145,18 @@ updates:
 ```
 
 
-## License
+## :octocat: [cytopia](https://github.com/cytopia) GitHub Actions
+
+| Name                         | Description |
+|------------------------------|-------------|
+| [docker-tag-action]          | Determines Docker tags based on git branch, commit or git tag |
+| [shell-command-retry-action] | Retries shell commands to avoid failing pipelines due to network issues |
+
+[docker-tag-action]: https://github.com/cytopia/docker-tag-action
+[shell-command-retry-action]: https://github.com/cytopia/shell-command-retry-action
+
+
+## :page_facing_up: License
 
 **[MIT License](LICENSE)**
 
