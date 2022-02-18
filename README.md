@@ -1,9 +1,9 @@
 # Docker tag action
 
-[![GitHub release](https://img.shields.io/github/release/cytopia/docker-tag-action.svg)](https://github.com/cytopia/docker-tag-action/releases/latest)
-[![GitHub marketplace](https://img.shields.io/badge/marketplace-cytopia--docker--tag--action-blue?logo=github)](https://github.com/marketplace/actions/docker-tag-action)
+[![GitHub release](https://img.shields.io/github/release/cytopia/docker-tag-action.svg?logo=github)](https://github.com/cytopia/docker-tag-action/releases/latest)
+[![GitHub marketplace](https://img.shields.io/badge/marketplace-docker--tag--action-blue?logo=github)](https://github.com/marketplace/actions/docker-tag-action)
+[![](https://img.shields.io/badge/github-cytopia%2Fdocker--tag--action-red.svg?logo=github)](https://github.com/cytopia/docker-tag-action "github.com/cytopia/docker-tag-action")
 [![test](https://github.com/cytopia/docker-tag-action/actions/workflows/test.yml/badge.svg)](https://github.com/cytopia/docker-tag-action/actions/workflows/test.yml)
-[![](https://img.shields.io/badge/github-cytopia%2Fdocker--tag-red.svg)](https://github.com/cytopia/docker-tag-action "github.com/cytopia/docker-tag-action")
 
 
 This action determines the Docker tag based on what git branch, git tag or git commit you are on.
@@ -71,7 +71,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag@v0.4
+        uses: cytopia/docker-tag@v0.4.2
 
       - name: build
         run: |
@@ -115,7 +115,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag@v0.4
+        uses: cytopia/docker-tag@v0.4.2
         with:
           latest_git_branch: master
           latest_docker_tag_name: ${{ matrix.version }}
