@@ -20,6 +20,10 @@ inputs:
     description: 'The prefix for all Docker tags, which do not identify as the conventional latest Tag (default: empty)'
     required: false
     default: ''
+  non_latest_docker_tag_suffix:
+    description: 'The suffix for all Docker tags, which do not identify as the conventional latest Tag (default: empty)'
+    required: false
+    default: ''
 
 outputs:
   docker-tag:
@@ -85,8 +89,13 @@ runs:
         if [ "${GIT_TYPE}" = "BRANCH" ] && [ "${GIT_NAME}" = "${{ inputs.latest_git_branch }}" ]; then
           DOCKER_TAG="${{ inputs.latest_docker_tag_name }}"
         else
-          DOCKER_TAG="${{ inputs.non_latest_docker_tag_prefix }}${GIT_NAME}"
+          DOCKER_TAG="${{ inputs.non_latest_docker_tag_prefix }}${GIT_NAME}${{ inputs.non_latest_docker_tag_suffix }}"
         fi
+
+        ###
+        ### Replace slashes '/' with dashes '-'
+        ###
+        DOCKER_TAG="${DOCKER_TAG//\//-}"
 
         ###
         ### Set final output for 'docker-tag'

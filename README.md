@@ -30,6 +30,7 @@ The following inputs can be used to alter the Docker tag name determination:
 | `latest_git_branch`            | No       | `master` | Optionally change the git branch, which determines the the Docker tag `latest`. |
 | `latest_docker_tag_name`       | No       | `latest` | Optionally specify an alternative Docker tag name for `latest`.                 |
 | `non_latest_docker_tag_prefix` | No       | ``       | Optionally add a prefix to all non-latest docker tags.                          |
+| `non_latest_docker_tag_suffix` | No       | ``       | Optionally add a suffix to all non-latest docker tags.                          |
 
 
 
@@ -71,7 +72,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag@v0.4.4
+        uses: cytopia/docker-tag@v0.4.5
 
       - name: build
         run: |
@@ -115,7 +116,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag@v0.4.4
+        uses: cytopia/docker-tag@v0.4.5
         with:
           latest_git_branch: master
           latest_docker_tag_name: ${{ matrix.version }}

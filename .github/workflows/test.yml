@@ -24,6 +24,12 @@ jobs:
         with:
           non_latest_docker_tag_prefix: "1-"
 
+      - name: "Docker tag (suffix)"
+        id: tag_suffix
+        uses: ./
+        with:
+          non_latest_docker_tag_suffix: "-2"
+
       - name: "Docker tag (alt latest)"
         id: tag_alt_latest
         uses: ./
@@ -37,6 +43,10 @@ jobs:
       - name: "Output (prefix)"
         run: |
           echo "${{ steps.tag_prefix.outputs.docker-tag }}"
+
+      - name: "Output (suffix)"
+        run: |
+          echo "${{ steps.tag_suffix.outputs.docker-tag }}"
 
       - name: "Output (alt latest)"
         run: |
