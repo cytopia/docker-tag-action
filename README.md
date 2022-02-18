@@ -72,7 +72,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag@v0.4.5
+        uses: cytopia/docker-tag-action@v0.4.6
 
       - name: build
         run: |
@@ -116,7 +116,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-        uses: cytopia/docker-tag@v0.4.5
+        uses: cytopia/docker-tag-action@v0.4.6
         with:
           latest_git_branch: master
           latest_docker_tag_name: ${{ matrix.version }}
