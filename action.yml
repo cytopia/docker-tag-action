@@ -93,6 +93,11 @@ runs:
         fi
 
         ###
+        ### Replace slashes '/' with dashes '-'
+        ###
+        DOCKER_TAG="${DOCKER_TAG//\//-}"
+
+        ###
         ### Set final output for 'docker-tag'
         ###
         echo "::set-output name=docker-tag::${DOCKER_TAG}"
