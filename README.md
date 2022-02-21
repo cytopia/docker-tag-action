@@ -6,7 +6,7 @@
 [![test](https://github.com/cytopia/docker-tag-action/actions/workflows/test.yml/badge.svg)](https://github.com/cytopia/docker-tag-action/actions/workflows/test.yml)
 
 
-This action determines the Docker tag based on what git branch, git tag or git commit you are on.
+This composite action determines the Docker tag based on what git branch, git tag or git commit you are on.
 
 
 ## :arrows_clockwise: Determination
