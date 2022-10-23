@@ -44,7 +44,7 @@ runs:
         HASH="$( git rev-parse --short HEAD )"
 
         # Hash is found in what Branch?
-        FROM="$( git branch --contains  "${HASH}" | head -2 | tac | head -1 | sed 's|^*[[:space:]]*||g' | sed 's|)||g' | xargs -n1 | tail -1 | xargs )"
+        FROM="$( git branch --contains "${HASH}" | head -2 | tac | head -1 | sed 's|^*[[:space:]]*||g' | sed 's|)||g' | xargs -n1 | tail -1 | xargs )"
 
         # How many commits behind FROM branch
         BEHIND="$( git rev-list --count "${HASH}..${FROM}" )"
@@ -100,7 +100,7 @@ runs:
         ###
         ### Set final output for 'docker-tag'
         ###
-        echo "::set-output name=docker-tag::${DOCKER_TAG}"
+        echo "docker-tag=${DOCKER_TAG}" >> $GITHUB_OUTPUT
 
         ###
         ### Output information
